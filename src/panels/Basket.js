@@ -8,6 +8,9 @@ import edit from '../img/edit.svg';
 import './place.css';
 
 
+const ConditionalLink = ({children, to, condition, className, classNameDisabled}) => (!!condition && to)
+    ? <Link to={to} className={className}>{children}</Link>
+    : <div className={classNameDisabled}>{children}</div>;
 const Basket = ({match: {params: {areaId, itemId}}, foodAreas, order}) => {
 
     const [faster, setFaster] = useState(true);
@@ -145,9 +148,10 @@ const Basket = ({match: {params: {areaId, itemId}}, foodAreas, order}) => {
                 </div>
             </div>
             <footer className="Place__footer">
-                <Link to={`/order/${area.id}/${item.id}`} className="Place__order">
+                <ConditionalLink to={`/order/${area.id}/${item.id}`} condition={price > 0} className="Place__order"
+                                 classNameDisabled="Place__order-disabled">
                     Оплатить {price}
-                </Link>
+                </ConditionalLink>
             </footer>
         </div>
     );
